@@ -23,7 +23,7 @@ Route::get('/', 'PagesController@getIndex');
 
 Route::resource('posts', 'PostController');
 
-Route::resource('categories', 'CategoryController');
+Route::resource('categories', 'CategoryController', ['except' => ['show', 'create']]);
 
 
 Auth::routes();

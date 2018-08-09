@@ -3,7 +3,7 @@
 @section('content')
   <div class="container mt-5">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <table class="table table-striped">
           <thead>
             <th>Id</th>
@@ -16,7 +16,7 @@
               @foreach($categories as $category)
                 <tr>
                   <th>{{$category->id}}</th>
-                  <td>{{ Html::linkRoute('categories.show', $category->category_name, [$category->id]) }}</td>
+                  <td>{{$category->category_name}}</td>
                   <td>{{$category->created_at}}</td>
                   <td>{{$category->updated_at}}</td>
                   <td>
@@ -29,6 +29,16 @@
               @endforeach
             </tbody>
         </table>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3">
+          <h2>Add New Category</h2>
+          {!! Form::open(['route'=>'categories.store']) !!}
+            {{ Form::label('category_name') }}
+            {{ Form::text('category_name', null, ['class'=>'form-control']) }}
+            {{ Form::submit('Save', ['class'=>'btn btn-success btn-block mt-3']) }}
+          {!! Form::close() !!}
+        </div>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8">
+        <p>{{$post->category->category_name}}</p>
         <h1>{{$post->title}}</h1>
         <p>{{$post->body}}</p>
       </div>

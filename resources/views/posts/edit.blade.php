@@ -19,6 +19,9 @@
       {{Form::label('title', 'Title:')}}
       {{Form::text('title', null, array('class'=>'form-control mb-3 form-control-lg', 'required'=>'', 'Maxlength' => '255'))}}
 
+      {{Form::label('category_id', 'Category:')}}
+      {{Form::select('category_id', $categories, null, array('class'=>'form-control mb-3', 'required'=>''))}}
+
       {{Form::label('slug', 'Slug:')}}
       {{Form::text('slug', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}
 
