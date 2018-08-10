@@ -7,6 +7,12 @@
         <p>Category: <strong>{{$post->category->category_name}}</strong></p>
         <h1>{{$post->title}}</h1>
         <p>{{$post->body}}</p>
+        <hr>
+        <p><strong>Tags:</strong>
+          @foreach($post->tags as $key => $tag)
+            <span class="badge badge-secondary">{{$tag->tag_name}}</span>
+          @endforeach
+        </p>
       </div>
     </div>
   </div>

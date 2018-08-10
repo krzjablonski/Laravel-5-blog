@@ -8,7 +8,7 @@ use App\Post;
 class BlogController extends Controller
 {
   public function getIndex(){
-    $posts = Post::paginate(10);
+    $posts = Post::orderBy('id', 'desc')->paginate(10);
 
     foreach($posts as $post){
       if(strlen($post->body) > 250){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Session;
 
 class PostController extends Controller
@@ -41,12 +42,27 @@ class PostController extends Controller
    */
   public function create()
   {
+
+      // Get all categories
       $categories = Category::all();
+
+      // Get all Tags
+      $tags = Tag::all();
+
+      // Create category array where key is category id and value is name of category. It will be used to output <select> in posts.create view using HTML facade
       $categoriresArr = array();
       foreach ($categories as $category) {
         $categoriresArr[$category->id] = $category->category_name;
       }
-      return view('posts.create')->withCategories($categoriresArr);
+
+        // Create tags array where key is tag id and value is name of tag. It will be used to output <select> in posts.create view using HTML facade
+      $tagsArr = array();
+      foreach($tags as $tag){
+        $tagsArr[$tag->id] = $tag->tag_name;
+      }
+
+      // Return view with categories and tags
+      return view('posts.create')->withCategories($categoriresArr)->withTags($tagsArr);
   }
 
   /**
@@ -64,6 +80,7 @@ class PostController extends Controller
       'category_id' => 'required|integer',
       'body' => 'required'
     ));
+
     // store in database
     $post = new Post;
     $post->title = $request->title;
@@ -72,6 +89,8 @@ class PostController extends Controller
     $post->body = $request->body;
 
     $post->save();
+
+    $post->tags()->sync($request->tags, false);
 
     // Send info for user via flash session
     Session::flash('success', 'The blog post was successfully created!');
@@ -101,13 +120,28 @@ class PostController extends Controller
    */
   public function edit($id)
   {
+    // Get single post by id
+    $post = Post::find($id);
+
+    // Get all categories
     $categories = Category::all();
+
+    // Get all Tags
+    $tags = Tag::all();
+
+    // Create category array where key is category id and value is name of category. It will be used to output <select> in posts.create view using HTML facade
     $categoriresArr = array();
     foreach ($categories as $category) {
       $categoriresArr[$category->id] = $category->category_name;
     }
-      $post = Post::find($id);
-      return view('posts.edit')->withPost($post)->withCategories($categoriresArr);
+
+      // Create tags array where key is tag id and value is name of tag. It will be used to output <select> in posts.create view using HTML facade
+    $tagsArr = array();
+    foreach($tags as $tag){
+      $tagsArr[$tag->id] = $tag->tag_name;
+    }
+
+    return view('posts.edit')->withPost($post)->withCategories($categoriresArr)->withTags($tagsArr);
   }
 
   /**
@@ -151,6 +185,12 @@ class PostController extends Controller
       // update data to database
       $post->save();
 
+      if(isset($request->tags)){
+        $post->tags()->sync($request->tags, true);
+      }else{
+        $post->tags()->sync(array());
+      }
+
       // Send flash message
       Session::flash('success', 'This post was successfully updated.');
 
@@ -168,6 +208,9 @@ class PostController extends Controller
   public function destroy($id)
   {
       $post = Post::find($id);
+
+      // Deatach all bidnings to tagas
+      $post->tags()->detach();
 
       $post->delete();
 

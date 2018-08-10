@@ -4,14 +4,20 @@
 
 @section('stylesheet')
   {!! Html::style('css/parsley.css') !!}
+  {!! Html::style('css/select2.min.css') !!}
 @endsection
 
 @section('script')
   {!! Html::script('js/parsley.min.js') !!}
+  {!! Html::script('js/select2.full.min.js') !!}
+  <script type="text/javascript">
+  $('.select2').select2({
+    placeholder: 'Select an option'
+  });
+  </script>
 @endsection
 
 @section('content')
-
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
@@ -24,6 +30,9 @@
 
             {{Form::label('category_id', 'Category:')}}
             {{Form::select('category_id', $categories, null, array('class'=>'form-control mb-3', 'required'=>''))}}
+
+            {{Form::Label('tags', 'Tags:')}}
+            {{Form::select('tags[]', $tags, null, array('class'=>'form-control mb-3 select2', 'required'=>'', 'multiple'=>'multiple'))}}
 
             {{Form::label('slug', 'Slug:')}}
             {{Form::text('slug', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}

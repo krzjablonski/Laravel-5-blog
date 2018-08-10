@@ -18,6 +18,9 @@
       <li class="nav-item {{Request::is('categories') ? 'active' : ''}}">
         {!! Html::linkRoute('categories.index', 'Categories', [], ['class' => 'nav-link']) !!}
       </li>
+      <li class="nav-item {{Request::is('tags') ? 'active' : ''}}">
+        {!! Html::linkRoute('tags.index', 'Tags', [], ['class' => 'nav-link']) !!}
+      </li>
     @endif
       <li class="nav-item {{Request::is('/') ? 'active' : ''}}">
         <a class="nav-link" href="/">Home</a>
