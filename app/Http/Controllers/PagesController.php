@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use App\Mail\ContactForm;
 use App\Post;
+use Session;
 
 class PagesController extends Controller{
   public function getIndex(){
@@ -18,7 +21,7 @@ class PagesController extends Controller{
     }
     return view('pages.welcome')->withPosts($posts);
   }
-  
+
   public function getAbout(){
     $first = 'Krzysztof';
     $last = 'Jablonski';
@@ -35,5 +38,21 @@ class PagesController extends Controller{
     $data = array();
     $data['title'] = 'Contact';
     return view('pages.contact')->withData($data);
+  }
+
+  public function postContact(Request $request){
+    // validate
+    $this->validate($request, [
+      'name' => 'required',
+      'email' => 'required|email',
+      'message' => 'required'
+    ]);
+
+    Mail::to('krz.jablonski@gmail.com')->send(new ContactForm($request));
+
+    Session::flash('success', 'Your email was send!');
+
+    return redirect()->route('contact');
+
   }
 }

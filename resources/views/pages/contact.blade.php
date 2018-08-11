@@ -5,27 +5,22 @@
   <div class="row">
     <div class="col pt-5">
       <h1>Contact Me</h1>
-      <form class="mt-5" action="index.html" method="post">
-        <div class="row">
-          <div class="form-group col">
-            <label for="name">Your Name</label>
-            <input type="text" name="name" class="form-control">
-          </div>
-          <div class="form-group col">
-            <label for="email">Your Email</label>
-            <input type="text" name="email" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <input type="text" name="subject" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="message">Your Message</label>
-          <textarea name="message" rows="8" cols="80" class="form-control"></textarea>
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-      </form>
+
+      {!! Form::open(['route' => 'contact.send']) !!}
+        {{ Form::label('name', 'Name:') }}
+        {{ Form::text('name', null, ['class'=>'form-control mb-3']) }}
+
+        {{ Form::label('email', 'Email:') }}
+        {{ Form::email('email', null, ['class'=>'form-control mb-3']) }}
+
+        {{Form::label('message', 'Message:')}}
+        {{ Form::textarea('message', null, ['class' => 'form-control mb-3']) }}
+
+        {{ Form::submit('Send', ['class'=>'btn btn-primary btn-block']) }}
+
+      {!! Form::close() !!}
+
+
     </div>
   </div>
 </div>
