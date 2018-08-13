@@ -48,7 +48,13 @@ class PagesController extends Controller{
       'message' => 'required'
     ]);
 
-    Mail::to('krz.jablonski@gmail.com')->send(new ContactForm($request));
+    $data = [
+      'name' => $request->name,
+      'email' => $request->email,
+      'msg' => $request->message,
+    ];
+
+    Mail::to('krz.jablonski@gmail.com')->send(new ContactForm($data));
 
     Session::flash('success', 'Your email was send!');
 

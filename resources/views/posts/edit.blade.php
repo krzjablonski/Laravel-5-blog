@@ -27,7 +27,7 @@
       {{Form::text('title', null, array('class'=>'form-control mb-3 form-control-lg', 'required'=>'', 'Maxlength' => '255'))}}
 
       {{Form::label('category_id', 'Category:')}}
-      {{Form::select('category_id', $categories, null, array('class'=>'form-control mb-3', 'required'=>''))}}
+      {{Form::select('category_id', $categories, null, array('id'=>'tags', 'class'=>'form-control mb-3', 'required'=>''))}}
 
       {{Form::Label('tags', 'Tags:')}}
       {{Form::select('tags', $tags, null, array('class'=>'form-control mb-3 select2', 'required'=>'', 'multiple'=>'multiple'))}}

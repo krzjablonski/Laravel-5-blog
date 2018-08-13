@@ -13,6 +13,20 @@
             <span class="badge badge-secondary">{{$tag->tag_name}}</span>
           @endforeach
         </p>
+        <hr>
+        <h5 class="mb-1">All Comments: <span class="badge badge-primary">{{$post->comments()->count()}}</span></h5>
+        <h5 class="mb-4">Approved Comments: <span class="badge badge-success">{{$post->comments()->where('approved', true)->count()}}</span></h5>
+        @foreach($post->comments as $comment)
+          <h6>{{$comment->name}} <small>on {{$comment->created_at}}</small></h6>
+          <p>{{$comment->comment}}</p>
+          @if($comment->approve != true)
+            {!! Html::linkRoute('comments.approve', 'Approve', array($comment->id), array('class' => 'btn btn-success')) !!}
+            {!! Form::open(['route'=>['comments.destroy', $comment->id], 'method'=>'DELETE']) !!}
+              {{ Form::submit('Delete', ['class'=>'btn btn-danger btn-block ']) }}
+            {!! Form::close() !!}
+          @endif
+          <hr>
+        @endforeach
       </div>
       <div class="col-md-4">
         <div class="card">

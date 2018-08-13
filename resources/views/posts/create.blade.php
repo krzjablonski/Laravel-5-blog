@@ -32,7 +32,7 @@
             {{Form::select('category_id', $categories, null, array('class'=>'form-control mb-3', 'required'=>''))}}
 
             {{Form::Label('tags', 'Tags:')}}
-            {{Form::select('tags[]', $tags, null, array('class'=>'form-control mb-3 select2', 'required'=>'', 'multiple'=>'multiple'))}}
+            {{Form::select('tags[]', $tags, null, array('id'=>'tags', 'class'=>'form-control select2', 'required'=>'', 'multiple'=>'multiple'))}}
 
             {{Form::label('slug', 'Slug:')}}
             {{Form::text('slug', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}
@@ -40,7 +40,7 @@
             {{Form::label('body', 'Post body:')}}
             {{Form::textarea('body', null, array('class'=>'form-control', 'required'=>''))}}
 
-            {{Form::submit('Save Post', array('class'=>'btn btn-success btn-lg btn-block mt-3'))}}
+            {{Form::submit('Save Post', array('id' => 'submit', 'class'=>'btn btn-success btn-lg btn-block mt-3'))}}
 
           {!! Form::close() !!}
       </div>

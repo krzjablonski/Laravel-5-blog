@@ -16,8 +16,8 @@
           <thead>
             <th>Id</th>
             <th>Title</th>
-            <th>Body</th>
             <th>Category</th>
+            <th>Comments</th>
             <th>Created at</th>
             <th>Last update</th>
             <th></th>
@@ -27,8 +27,8 @@
               <tr>
                 <th>{{$post->id}}</th>
                 <td>{!! Html::linkRoute('posts.show', $post->title, array($post->id), array()) !!}</td>
-                <td>{{$post->body}}</td>
                 <td>{{$post->category->category_name}}</td>
+                <td>{{$post->comments()->where('approved', true)->count()}} / {{$post->comments()->count()}}</td>
                 <td>{{date('d.m.Y', strtotime($post->created_at))}}</td>
                 <td>{{date('d.m.Y', strtotime($post->updated_at))}}</td>
                 <td>
