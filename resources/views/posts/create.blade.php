@@ -15,6 +15,13 @@
     placeholder: 'Select an option'
   });
   </script>
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>
+  tinymce.init({
+    selector:'textarea',
+    plugins: "lists code table hr link",
+  });
+</script>
 @endsection
 
 @section('content')
@@ -34,11 +41,8 @@
             {{Form::Label('tags', 'Tags:')}}
             {{Form::select('tags[]', $tags, null, array('id'=>'tags', 'class'=>'form-control select2', 'required'=>'', 'multiple'=>'multiple'))}}
 
-            {{Form::label('slug', 'Slug:')}}
-            {{Form::text('slug', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}
-
-            {{Form::label('body', 'Post body:')}}
-            {{Form::textarea('body', null, array('class'=>'form-control', 'required'=>''))}}
+            {{Form::label('body', 'Post body:', ['class' => 'mt-3'])}}
+            {{Form::textarea('body', null, array('class'=>'form-control'))}}
 
             {{Form::submit('Save Post', array('id' => 'submit', 'class'=>'btn btn-success btn-lg btn-block mt-3'))}}
 

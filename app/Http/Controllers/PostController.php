@@ -7,6 +7,7 @@ use App\Post;
 use App\Category;
 use App\Tag;
 use Session;
+use Purifier;
 
 class PostController extends Controller
 {
@@ -25,12 +26,6 @@ class PostController extends Controller
   {
       // get all posts from posts table
       $posts = Post::orderBy('id', 'desc')->paginate(10);
-      foreach($posts as $post){
-        if(strlen($post->body) > 50){
-          $post->body = substr($post->body, 0, stripos($post->body, ".", 0))."[...]";
-        }
-      }
-
       // Pass posts to view
       return view('posts.index')->withPosts($posts);
   }
@@ -75,8 +70,7 @@ class PostController extends Controller
   {
     // validate the data
     $this->validate($request, array(
-      'title' => 'required|max:255',
-      'slug' => 'required|alpha_dash|max:255|unique:posts,slug',
+      'title' => 'required|max:255unique:posts,title',
       'category_id' => 'required|integer',
       'body' => 'required'
     ));
@@ -86,9 +80,9 @@ class PostController extends Controller
     // store in database
     $post = new Post;
     $post->title = $request->title;
-    $post->slug = $request->slug;
+    $post->slug = strtolower(str_replace(' ', '-', $request->title));
     $post->category()->associate($category);
-    $post->body = $request->body;
+    $post->body = Purifier::clean($request->body);
 
     $post->save();
 
@@ -181,7 +175,7 @@ class PostController extends Controller
       $post->title = $request->title;
       $post->slug = $request->slug;
       $post->category_id = $request->category_id;
-      $post->body = $request->body;
+      $post->body = Purifier::clean($request->body);
 
 
       // update data to database

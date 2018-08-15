@@ -15,6 +15,13 @@
     placeholder: 'Select an option'
   });
   </script>
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>
+  tinymce.init({
+    selector:'textarea',
+    plugins: "lists code table hr link",
+  });
+</script>
 @endsection
 
 @section('content')

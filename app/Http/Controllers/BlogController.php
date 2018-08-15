@@ -12,7 +12,7 @@ class BlogController extends Controller
 
     foreach($posts as $post){
       if(strlen($post->body) > 250){
-        $post->body = substr($post->body, 0, strpos($post->body, " ", 250)).'[...]';
+        $post->body = substr(strip_tags($post->body), 0, strpos(strip_tags($post->body), " ", 250)).'[...]';
       }
     }
 

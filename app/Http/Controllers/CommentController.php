@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Comment;
 use App\Post;
 use Session;
@@ -69,6 +70,10 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+
+        $comment->delete();
+
+        return back();
     }
 }

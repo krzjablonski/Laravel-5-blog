@@ -9,19 +9,26 @@ use App\Post;
 use Session;
 
 class PagesController extends Controller{
+
+  // Home page
   public function getIndex(){
 
     $posts = Post::orderBy('id', 'desc')->take(4)->get();
 
     foreach($posts as $post){
-      if(strlen($post->body) > 50){
-        $post->body = substr($post->body, 0, stripos($post->body, " ", 250))."[...]";
+
+      if(strlen($post->body) > 250){
+        $post->body = substr(strip_tags($post->body), 0, stripos(strip_tags($post->body), " ", 250))."[...]";
+      }else{
+        $post->body = strip_tags($post->body);
       }
 
     }
+
     return view('pages.welcome')->withPosts($posts);
   }
 
+  // About page
   public function getAbout(){
     $first = 'Krzysztof';
     $last = 'Jablonski';
@@ -34,6 +41,8 @@ class PagesController extends Controller{
     $data['title'] = 'About';
     return view('pages.about')->withData($data);
   }
+
+  // Contact page
   public function getContact(){
     $data = array();
     $data['title'] = 'Contact';

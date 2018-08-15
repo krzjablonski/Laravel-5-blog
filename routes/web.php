@@ -32,6 +32,6 @@ Route::resource('tags', 'TagController', ['except' => 'create']);
 // comments
 Route::post('comments/{post_id}', ['uses' => 'CommentController@store', 'as' => 'comments.store']);
 Route::get('comments/approve/{comment_id}', ['uses'=>'CommentController@approve', 'as' => 'comments.approve'])->middleware('auth');
-Route::delete('comments/{id}', ['uses' => 'CommentController@destoy', 'as' => 'comments.destroy'])->middleware('auth');
+Route::delete('comments/{id}', ['uses' => 'CommentController@destroy', 'as' => 'comments.destroy'])->middleware('auth');
 
 Auth::routes();

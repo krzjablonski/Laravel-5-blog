@@ -9,7 +9,7 @@
           <div class="post border-bottom mt-5 pb-3">
             <p class="text-muted mb-0">{{date('d.m.Y', strtotime($post->created_at))}} | {{$post->category->category_name}}</p>
             <h2>{{$post->title}}</h2>
-            <p class="post-excerpt">{{$post->body}}</p>
+            <p class="post-excerpt">{{strip_tags($post->body)}}</p>
             {!! Html::linkRoute('blog.single', 'Read more', [$post->slug], ['class'=>'btn btn-primary btn-sm']) !!}
           </div>
         @endforeach
