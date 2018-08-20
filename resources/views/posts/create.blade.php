@@ -30,7 +30,7 @@
       <div class="col-md-8 offset-md-2">
         <h1>Create New Post</h1>
         <div class="form-group">
-          {!! Form::open(['route' => 'posts.store', 'data-parsley-validate' => '']) !!}
+          {!! Form::open(['route' => 'posts.store', 'files'=>'true', 'data-parsley-validate' => '']) !!}
 
             {{Form::label('title', 'Title:')}}
             {{Form::text('title', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}
@@ -38,8 +38,11 @@
             {{Form::label('category_id', 'Category:')}}
             {{Form::select('category_id', $categories, null, array('class'=>'form-control mb-3', 'required'=>''))}}
 
-            {{Form::Label('tags', 'Tags:')}}
+            {{Form::label('tags', 'Tags:')}}
             {{Form::select('tags[]', $tags, null, array('id'=>'tags', 'class'=>'form-control select2', 'required'=>'', 'multiple'=>'multiple'))}}
+
+            {{ Form::label('featured_image', 'Upload featured image:', ['class' => 'mt-3']) }}
+            {{ Form::file('featured_image', ['class' => 'form-control']) }}
 
             {{Form::label('body', 'Post body:', ['class' => 'mt-3'])}}
             {{Form::textarea('body', null, array('class'=>'form-control'))}}

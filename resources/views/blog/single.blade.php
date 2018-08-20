@@ -4,6 +4,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
+        <img class="img-fluid mb-3" src="{{asset('images/' . $post->featured_image)}}" alt="">
         <p>Category: <strong>{{$post->category->category_name}}</strong></p>
         <h1>{{$post->title}}</h1>
         <p>{!!$post->body!!}</p>

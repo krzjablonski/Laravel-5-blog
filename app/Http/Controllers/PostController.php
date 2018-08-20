@@ -8,6 +8,8 @@ use App\Category;
 use App\Tag;
 use Session;
 use Purifier;
+use Image;
+use Storage;
 
 class PostController extends Controller
 {
@@ -72,7 +74,8 @@ class PostController extends Controller
     $this->validate($request, array(
       'title' => 'required|max:255unique:posts,title',
       'category_id' => 'required|integer',
-      'body' => 'required'
+      'body' => 'required',
+      'featured_image' => 'sometimes|file|image'
     ));
 
     $category = Category::find($request->category_id);
@@ -83,6 +86,24 @@ class PostController extends Controller
     $post->slug = strtolower(str_replace(' ', '-', $request->title));
     $post->category()->associate($category);
     $post->body = Purifier::clean($request->body);
+
+    if($request->hasFile('featured_image')){
+      $image = $request->file('featured_image');
+
+      $imgOriginalName = $image->getClientOriginalName();
+
+      $fileName = substr($imgOriginalName, 0, strrpos($imgOriginalName, '.'));
+      $fileName .= '-' . time() . '.' . $image->getClientOriginalExtension();
+
+      $location = public_path('images/'.$fileName);
+
+      Image::make(file_get_contents($image))->resize(1200, null, function($constraint){
+        $constraint->aspectRatio();
+        $constraint->upsize();
+      })->save($location);
+
+      $post->featured_image = $fileName;
+    }
 
     $post->save();
 
@@ -153,21 +174,13 @@ class PostController extends Controller
       // find post
       $post = Post::find($id);
 
-      // Validate request. If slug has not changed do not validate it. Otherwise it will cause error
-      if($request->slug == $post->slug){
-        $this->validate($request, array(
-          'title' => 'required|max:255',
-          'category_id' => 'required|integer',
-          'body' => 'required'
-        ));
-      }else{
-        $this->validate($request, array(
-          'title' => 'required|max:255',
-          'slug' => 'required|alpha_dash|max:255|unique:posts,slug',
-          'category_id' => 'required|integer',
-          'body' => 'required'
-        ));
-      }
+      $this->validate($request, array(
+        'title' => 'required|max:255',
+        'slug' => "required|alpha_dash|max:255|unique:posts,slug,$id",
+        'category_id' => 'required|integer',
+        'body' => 'required',
+        'featured_image' => 'file|image',
+      ));
 
 
       // update properties of post obj in database
@@ -177,6 +190,24 @@ class PostController extends Controller
       $post->category_id = $request->category_id;
       $post->body = Purifier::clean($request->body);
 
+      if($request->hasFile('featured_image')){
+        $image = $request->file('featured_image');
+
+        $imgOriginalName = $image->getClientOriginalName();
+
+        $fileName = substr($imgOriginalName, 0, strrpos($imgOriginalName, '.'));
+        $fileName .= '-' . time() . '.' . $image->getClientOriginalExtension();
+
+        $location = public_path('images/'.$fileName);
+
+        Image::make(file_get_contents($image))->resize(1200, null, function($constraint){
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        })->save($location);
+        $oldFileName = $post->featured_image;
+        $post->featured_image = $fileName;
+        Storage::delete($oldFileName);
+      }
 
       // update data to database
       $post->save();
@@ -207,6 +238,8 @@ class PostController extends Controller
 
       // Deatach all bidnings to tagas
       $post->tags()->detach();
+
+      Storage::delete($post->featured_image);
 
       $post->delete();
 

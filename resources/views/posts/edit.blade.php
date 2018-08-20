@@ -27,7 +27,7 @@
 @section('content')
 
 <div class="container mt-5">
-  {!!Form::model($post, ['route'=>['posts.update', $post->id], 'method'=>'PUT', 'data-parsley-validate' => '', 'class'=>'row'])!!}
+  {!!Form::model($post, ['route'=>['posts.update', $post->id], 'method'=>'PUT', 'files'=>'true', 'data-parsley-validate' => '', 'class'=>'row'])!!}
     <div class="col-md-8">
       <h1>{{$post->title}}</h1>
       {{Form::label('title', 'Title:')}}
@@ -41,6 +41,9 @@
 
       {{Form::label('slug', 'Slug:')}}
       {{Form::text('slug', null, array('class'=>'form-control mb-3', 'required'=>'', 'Maxlength' => '255'))}}
+
+      {{ Form::label('featured_image', 'Update featured image:', ['class' => 'mt-3']) }}
+      {{ Form::file('featured_image', ['class' => 'form-control']) }}
 
       {{Form::label('body', 'Post body:')}}
       {{Form::textarea('body', null, array('class'=>'form-control', 'required'=>''))}}
