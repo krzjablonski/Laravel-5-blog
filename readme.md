@@ -2,4 +2,4 @@
 
 Simple Blog app created with Laravel 5
 
-WORK IN PROGRESS
+## v1.0
